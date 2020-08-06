@@ -3,7 +3,7 @@ name: PR Automation Trigger
 on:
     pull_request:
         # Not sure what exactly qualifies as "edited"
-        types: [created, edited]
+        types: [opened, edited]
         branches:
             - pull-request
 
