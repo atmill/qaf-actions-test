@@ -15,14 +15,14 @@ jobs:
         steps:
             - name: Checkout PR
               uses: actions/checkout
-                with:
-                    ref: ${{ github.event.pull_request.head.sha }}
+              with:
+                ref: ${{ github.event.pull_request.head.sha }}
             - name: Run Java Checkstyle
               uses: dbelyaev/action-checkstyle@v0.1.1
-                with:
-                    github_token: ${{ secrets.github_token }}
-                    reporter: github-pr-review
-                    level: warning
+              with:
+                github_token: ${{ secrets.github_token }}
+                reporter: github-pr-review
+                level: warning
     exec_autom:
         # Executes automation based on contents of PR message
         name: Execute Automation per PR Message
@@ -32,8 +32,8 @@ jobs:
             - name: Checkout PR
               if: contains(github.event.pull_request.body, "EXECUTE AUTOMATION")
               uses: actions/checkout
-                with:
-                    ref: ${{ github.event.pull_request.head.sha }}
+              with:
+                ref: ${{ github.event.pull_request.head.sha }}
             - name: Parse PR Message and Execute Job
               if: contains(github.event.pull_request.body, "EXECUTE AUTOMATION")
               run: .\..\..\scripts\ParsePrMsgAndTriggerJob.ps1 ${{ github.event.pull_request.body }}
