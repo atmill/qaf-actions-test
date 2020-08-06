@@ -1,0 +1,40 @@
+# Test workflow for triggering action on PR with certain text
+name: PR Automation Trigger
+on:
+    pull_request:
+        # Not sure what exactly qualifies as "edited"
+        types: [created, edited]
+        branches:
+            - master
+
+jobs:
+    java_checkstyle:
+        # Runs a style check on code in PR
+        name: Java Style Check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout PR
+              uses: actions/checkout
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
+            - name: Run Java Checkstyle
+              uses: dbelyaev/action-checkstyle@v0.1.1
+                with:
+                    github_token: ${{ secrets.github_token }}
+                    reporter: github-pr-review
+                    level: warning
+    exec_autom:
+        # Executes automation based on contents of PR message
+        name: Execute Automation per PR Message
+        #needs: java_checkstyle
+        runs-on: windows-latest
+        steps:
+            - name: Checkout PR
+              if: contains(github.event.pull_request.body, "EXECUTE AUTOMATION")
+              uses: actions/checkout
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
+            - name: Parse PR Message and Execute Job
+              if: contains(github.event.pull_request.body, "EXECUTE AUTOMATION")
+              run: .\..\..\scripts\ParsePrMsgAndTriggerJob.ps1 ${{ github.event.pull_request.body }}
+            
