@@ -5,7 +5,7 @@ on:
         # Not sure what exactly qualifies as "edited"
         types: [created, edited]
         branches:
-            - master
+            - pull-request
 
 jobs:
     java_checkstyle:
