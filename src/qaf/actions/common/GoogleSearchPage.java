@@ -15,7 +15,7 @@ public class GoogleSearchPage extends WebDriverBaseTestPage<WebDriverTestPage> {
     @FindBy(locator = "google.search.field")
     private QAFWebElement googleSearchField;
     
-    
+    // Method comment here
     @QAFTestStep(description = "verify on Google search page")
     public void verifyOnPage() {
         Validator.verifyTrue(
