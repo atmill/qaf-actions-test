@@ -7,7 +7,7 @@
 if ($Args.Count -lt 1) {
   Write-Host "Usage: .\ParsePrMsgAndTriggerJob.ps1 <PR-message>"
   Write-Host "Parses the given PR message, which should contain arugments to pass along to a job"
-  Write-Host "Example: .\ParsePrMsgAndTriggerJob.ps1 'Made changes EXECUTE AUTOMATION group=test;env=qa;branch=qa'"
+  Write-Host "Example: .\ParsePrMsgAndTriggerJob.ps1 'Made changes EXECUTE AUTOMATION job=productA;group=test;env=qa;branch=qa'"
   Write-Host ""
 
   exit 1
@@ -27,21 +27,25 @@ if ($argStr.Length -eq 0) {
 
 $jobArgs = $argStr.Split(";")
 
-# A list of all possible job arguments
+# A list of all possible script arguments
 # REQUIRED
+$jobArg = ""
 $groupArg = ""
 $envArg = ""
 $branchArg = ""
 # NOT REQUIRED - must have default value
 $browserArg = "Chrome"
 
-# For each given job argument
+# For each given script argument
 foreach ($jobArg in $jobArgs) {
   $argPieces = $jobArg.Split("=")
   $argName = $argPieces[0]
   $argValue = $argPieces[1]
 
   Switch -Exact ($argName) {
+    "job" {
+      $jobArg = $argValue
+    }
     "group" {
       $groupArg = $argValue
     }
@@ -55,17 +59,31 @@ foreach ($jobArg in $jobArgs) {
       $browserArg = $argValue
     }
     default {
-      Write-Host "$argName argument not recognized"
+      Write-Host "Argument not recognized: $argName"
     }
   }
 }
 
 # Checks that required arguments were set
-$argsSetFlag = $groupArg -ne "" -and $envArg -ne "" -and $branchArg -ne ""
+$argsSetFlag = $jobArg -ne "" -and $groupArg -ne "" -and $envArg -ne "" -and $branchArg -ne ""
 if (!$argsSetFlag) {
-  Write-Host "Not all required arguments were set: group=$groupArg; env=$envArg; branch=$branchArg"
+  Write-Host "Not all required arguments were set: job=$jobArg; group=$groupArg; env=$envArg; branch=$branchArg"
   exit 1
 }
 
-# TODO call endpoint to run job with given argumemts
-Write-Host("-Dtest.group=$groupArg -Dtest.env=$envArg -Dtest.branch=$branchArg -Dtest.browser=$browserArg")
+# Depending on the specified job, the appropriate Jenkins endpoint is called
+# to execute the job with the given arguments
+Switch -Exact ($jobArg) {
+  "productA" {
+    # TODO call Jenkins endpoint to run productA job with given argumemts
+    Write-Host("productA job: -Dtest.group=$groupArg -Dtest.env=$envArg -Dtest.branch=$branchArg -Dtest.browser=$browserArg")
+  }
+  "productB" {
+    # TODO call Jenkins endpoint to run productB job with given argumemts
+    Write-Host("productB job: -Dtest.group=$groupArg -Dtest.env=$envArg -Dtest.branch=$branchArg -Dtest.browser=$browserArg")
+  }
+  default {
+    Write-Host "Job argument value not recognized: $jobArg"
+    exit 1
+  }
+}
