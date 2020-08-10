@@ -26,7 +26,7 @@ if ($fullMsgPieces.Count -eq 1) {
 }
 
 $argStr = $fullMsgPieces[1].trim()
-$jobArgs = $argStr.Split(";")
+$scriptArgs = $argStr.Split(";")
 
 # A list of all possible script arguments
 # REQUIRED
@@ -38,13 +38,13 @@ $branchArg = ""
 $browserArg = "Chrome"
 
 # For each given script argument
-foreach ($jobArg in $jobArgs) {
-  if ($jobArg -notcontains "=") {
-    Write-Host "= not found in current argument; skipping to next argument"
+foreach ($curArg in $scriptArgs) {
+  if ($curArg -notmatch "=") {
+    Write-Host "= not found in current argument, $curArg; skipping to next argument"
     continue
   }
 
-  $argPieces = $jobArg.Split("=")
+  $argPieces = $curArg.Split("=")
   $argName = $argPieces[0]
   $argValue = $argPieces[1]
 
