@@ -14,17 +14,16 @@ public class GoogleSearchPage extends WebDriverBaseTestPage<WebDriverTestPage> {
     @PageIdentifier
     @FindBy(locator = "google.search.field")
     private QAFWebElement googleSearchField;
-    
-    // Method comment here
+
     @QAFTestStep(description = "verify on Google search page")
-    public void verifyOnPage() {
+    public void VerifyOnPage() {
         Validator.verifyTrue(
                 googleSearchField.isPresent(),
                 "User is not on Google search page",
                 "User is on Google search page"
         );
     }
-    
+
     @Override
     protected void openPage(PageLocator locator, Object... args) {
         // TODO Auto-generated method stub
