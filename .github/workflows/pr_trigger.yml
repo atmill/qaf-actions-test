@@ -31,7 +31,7 @@ jobs:
         steps:
             - name: Checkout PR
               if: contains(github.event.pull_request.body, 'EXECUTE AUTOMATION')
-              uses: actions/checkout
+              uses: actions/checkout@v2
               with:
                 ref: ${{ github.event.pull_request.head.sha }}
             - name: Parse PR Message and Execute Job
