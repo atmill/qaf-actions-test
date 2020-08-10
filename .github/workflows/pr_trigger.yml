@@ -26,7 +26,6 @@ jobs:
     exec_autom:
         # Executes automation based on contents of PR message
         name: Execute Automation per PR Message
-        #needs: java_checkstyle
         runs-on: windows-latest
         steps:
             - name: Checkout PR
@@ -36,5 +35,5 @@ jobs:
                 ref: ${{ github.event.pull_request.head.sha }}
             - name: Parse PR Message and Execute Job
               if: contains(github.event.pull_request.body, 'EXECUTE AUTOMATION')
-              run: .\..\..\scripts\ParsePrMsgAndTriggerJob.ps1 ${{ github.event.pull_request.body }}
+              run: .\..\..\scripts\ParsePrMsgAndTriggerJob.ps1 "${{ github.event.pull_request.body }}"
             
