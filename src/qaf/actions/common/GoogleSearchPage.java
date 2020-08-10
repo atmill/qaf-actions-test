@@ -15,8 +15,9 @@ public class GoogleSearchPage extends WebDriverBaseTestPage<WebDriverTestPage> {
     @FindBy(locator = "google.search.field")
     private QAFWebElement googleSearchField;
 
+    // Resolved java checkstyle warning
     @QAFTestStep(description = "verify on Google search page")
-    public void VerifyOnPage() {
+    public void verifyOnPage() {
         Validator.verifyTrue(
                 googleSearchField.isPresent(),
                 "User is not on Google search page",
