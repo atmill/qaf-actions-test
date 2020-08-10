@@ -17,14 +17,15 @@ if ($Args.Count -lt 1) {
 $fullMsg = [string] $Args[0]
 $separator = [string[]]@("EXECUTE AUTOMATION")
 $splitOpt = [System.StringSplitOptions]::RemoveEmptyEntries
-$argStr = $fullMsg.Split($separator, $splitOpt)[1].trim()
+$fullMsgPieces = $fullMsg.Split($separator, $splitOpt)
 
 # If no arguments were specified in the PR message
-if ($argStr.Length -eq 0) {
+if ($fullMsgPieces.Count -eq 1) {
   Write-Host "No arguments were specified in the PR message; failing script"
   exit 1
 }
 
+$argStr = $fullMsgPieces[1].trim()
 $jobArgs = $argStr.Split(";")
 
 # A list of all possible script arguments
@@ -38,6 +39,11 @@ $browserArg = "Chrome"
 
 # For each given script argument
 foreach ($jobArg in $jobArgs) {
+  if ($jobArg -notcontains "=") {
+    Write-Host "= not found in current argument; skipping to next argument"
+    continue
+  }
+
   $argPieces = $jobArg.Split("=")
   $argName = $argPieces[0]
   $argValue = $argPieces[1]
