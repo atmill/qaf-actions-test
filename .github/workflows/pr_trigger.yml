@@ -4,8 +4,8 @@ on:
     pull_request:
         # Not sure what exactly qualifies as "edited"
         types: [opened, edited]
-        branches:
-            - pull-request
+        #branches:
+            #- pull-request
 
 jobs:
     java_checkstyle:
