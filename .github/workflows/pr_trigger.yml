@@ -2,14 +2,13 @@
 name: PR Automation Trigger
 on:
     pull_request:
-        # Not sure what exactly qualifies as "edited"
+        # "edited" refers to when the PR title or message is edited
         types: [opened, edited]
-        #branches:
-            #- pull-request
 
 jobs:
     java_checkstyle:
-        # Runs a style check on code in PR
+        # Runs a style check on code in PR; if any issues are found,
+        # the issues are reported as comments on the PR
         name: Java Style Check
         runs-on: ubuntu-latest
         steps:
