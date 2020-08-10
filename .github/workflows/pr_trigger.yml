@@ -35,6 +35,6 @@ jobs:
                 ref: ${{ github.event.pull_request.head.sha }}
             - name: Parse PR Message and Execute Job
               if: contains(github.event.pull_request.body, 'EXECUTE AUTOMATION')
-              run: .\..\scripts\ParsePrMsgAndTriggerJob.ps1 "${{ github.event.pull_request.body }}"
+              run: ls ..\scripts\; cd ..\scripts; ParsePrMsgAndTriggerJob.ps1 "${{ github.event.pull_request.body }}"
               shell: powershell
             
