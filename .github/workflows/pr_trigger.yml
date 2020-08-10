@@ -30,11 +30,11 @@ jobs:
         runs-on: windows-latest
         steps:
             - name: Checkout PR
-              if: contains(github.event.pull_request.body, "EXECUTE AUTOMATION")
+              if: contains(github.event.pull_request.body, 'EXECUTE AUTOMATION')
               uses: actions/checkout
               with:
                 ref: ${{ github.event.pull_request.head.sha }}
             - name: Parse PR Message and Execute Job
-              if: contains(github.event.pull_request.body, "EXECUTE AUTOMATION")
+              if: contains(github.event.pull_request.body, 'EXECUTE AUTOMATION')
               run: .\..\..\scripts\ParsePrMsgAndTriggerJob.ps1 ${{ github.event.pull_request.body }}
             
