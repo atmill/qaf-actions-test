@@ -22,7 +22,7 @@ jobs:
               with:
                 github_token: ${{ secrets.github_token }}
                 reporter: github-pr-review
-                level: warning
+                level: error
     exec_autom:
         # Executes automation based on contents of PR message
         name: Execute Automation per PR Message
